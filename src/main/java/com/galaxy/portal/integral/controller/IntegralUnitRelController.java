@@ -1,6 +1,7 @@
 package com.galaxy.portal.integral.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,6 +57,27 @@ public class IntegralUnitRelController {
        return Result.OK(pageList);
    }
 
+    /**
+     * 分页列表查询:根据部门表左外连接生成记录
+     *
+     * @param integralUnitRel
+     * @param pageNo
+     * @param pageSize
+     * @param req
+     * @return
+     */
+    @ApiOperation(value="积分-部门关系表-分页列表查询", notes="积分-部门关系表-分页列表查询")
+    @GetMapping(value = "/listWithAllUser")
+    public Result<?> queryPageListWithAllUser(IntegralUnitRel integralUnitRel,
+                                   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+                                   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+                                   HttpServletRequest req) {
+        QueryWrapper<IntegralUnitRel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.setEntity(integralUnitRel);
+        Page<IntegralUnitRel> page = new Page<IntegralUnitRel>(pageNo, pageSize);
+        IPage<IntegralUnitRel> pageList = integralUnitRelService.page(page, queryWrapper);
+        return Result.OK(pageList);
+    }
    /**
     *   添加
     *

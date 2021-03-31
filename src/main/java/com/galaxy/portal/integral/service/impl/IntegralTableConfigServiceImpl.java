@@ -6,16 +6,20 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.galaxy.portal.common.system.SysUser;
+import com.galaxy.portal.common.vo.Result;
 import com.galaxy.portal.integral.entity.IntegralTableConfig;
 import com.galaxy.portal.integral.entity.IntegralTableConfigRO;
 import com.galaxy.portal.integral.entity.IntegralTableConfigVO;
+import com.galaxy.portal.integral.entity.IntegralUnitRel;
 import com.galaxy.portal.integral.mapper.IntegralTableConfigMapper;
 import com.galaxy.portal.integral.service.IIntegralTableConfigService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Description: 资源-积分配置表
@@ -25,10 +29,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class IntegralTableConfigServiceImpl extends ServiceImpl<IntegralTableConfigMapper, IntegralTableConfig> implements IIntegralTableConfigService {
-//    @Override
-//    public String selectIntegraTableConfigInfoByUser(String name) {
-//        return baseMapper.selectIntegraTableConfigInfoByUser(name);
-//    }
 
 
     @Override
@@ -45,14 +45,7 @@ public class IntegralTableConfigServiceImpl extends ServiceImpl<IntegralTableCon
             integralTableConfigVO.setBelongToUnit(integralTableConfigVO.getSysUser().getUnitCode());
         }
         page = baseMapper.selectListByUser(page,integralTableConfigVO);
-        /*
-
-        IntegralTableConfig integralTableConfig = new IntegralTableConfig();
-        BeanUtils.copyProperties(integralTableConfigVO, integralTableConfig);
-        QueryWrapper<IntegralTableConfig> queryWrapper = new QueryWrapper();
-        queryWrapper.setEntity(integralTableConfig);
-        IPage<IntegralTableConfigRO> integralTableConfigPage = baseMapper.selectListByUser(page, queryWrapper);
-        List<IntegralTableConfigRO> recordList = integralTableConfigPage.getRecords().stream().map(record -> {
+        List<IntegralTableConfigRO> recordList = page.getRecords().stream().map(record -> {
             //只能编辑直属部门的数据
             if (record.getBelongToUnit().equals(unitCode)) {
                 record.setAllowEdit(true);
@@ -61,10 +54,58 @@ public class IntegralTableConfigServiceImpl extends ServiceImpl<IntegralTableCon
             }
             return record;
         }).collect(Collectors.toList());
-        integralTableConfigPage.setRecords(recordList);
-        return new Page<>();
-        page.setRecords(list);*/
-
+        page.setRecords(recordList);
         return page;
     }
+
+
+    @Override
+    public Result<?> editBatch(Map<String,String> paramsMap) {
+
+        //过滤定价不符合规范的对象(每个用户只能更新自己部门下的资源配置)
+
+        //将符合定价的要求对象插入数据库
+        String[] ids = paramsMap.get("ids").split(",");
+        if(ids.length <= 0){
+            return Result.error("请至少选择一条记录更新");
+        }
+
+        // 1.批量上/下架;2.批量设置数据等级；3：批量设置积分
+        if(paramsMap.get("dataTypeId") == null && paramsMap.get("putOnSale") == null && paramsMap.get("searchIntegral") == null){
+            return Result.error("请选择一个要更新的类型");
+        }
+
+        //参数值不能设置负数，后期校验
+        List<IntegralTableConfig> integralTableConfigList = Stream.of(ids).map(id ->{
+            IntegralTableConfig integralTableConfig = new IntegralTableConfig();
+            integralTableConfig.setId(id);
+            if(paramsMap.get("putOnSale") != null){
+                integralTableConfig.setPutOnSale(Integer.parseInt(paramsMap.get("putOnSale")));
+            }
+            if(paramsMap.get("dataTypeId") != null){
+                integralTableConfig.setDataTypeId(Integer.parseInt(paramsMap.get("dataTypeId")));
+            }
+            if(paramsMap.get("searchIntegral") != null){
+                integralTableConfig.setSearchIntegral(Integer.parseInt(paramsMap.get("searchIntegral")));
+            }
+            return integralTableConfig;
+        }).filter(integralTableConfig -> {
+            //过滤不是当前用户所属的或者分值设置超标的记录
+            /*QueryWrapper<IntegralTableConfig> queryWrapper = new QueryWrapper<>();
+            queryWrapper.setEntity(integralTableConfig);
+            IntegralTableConfig temInfo = this.baseMapper.selectOne(queryWrapper);
+            if(!temInfo.getBelongToUnit().equals(paramsMap.get("unit_code"))){
+                return false;
+            }*/
+            return true;
+        }).collect(Collectors.toList());
+        boolean b = this.updateBatchById(integralTableConfigList);
+        if(b){
+            return Result.error("批量更新成功");
+        }else{
+            return Result.error("批量更新失败");
+        }
+
+    }
+
 }

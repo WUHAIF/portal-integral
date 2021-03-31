@@ -6,7 +6,7 @@ swagger:
 # 数据源配置
 spring:
   application:
-    name: consumer-demo
+    name: integral-module
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -72,9 +72,10 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
+##注册到eruka上面
 eureka:
   client:
+    register-with-eureka: true
+    fetchRegistry: true
     service-url:
-      register-with-eureka: true
-      fetch-registry: true
-      defaultZone: http://eureka7001.com:7001/eureka
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/

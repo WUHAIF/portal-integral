@@ -63,7 +63,29 @@ public class IntegralUserRelController{
        return Result.OK(pageList);
    }
 
-   /**
+    /**
+     * 分页列表查询；根据用户表左外连接生成列表记录
+     *
+     * @param integralUserRel
+     * @param pageNo
+     * @param pageSize
+     * @param req
+     * @return
+     */
+    @ApiOperation(value="积分-用户关系表-分页列表查询", notes="积分-用户关系表-分页列表查询")
+    @GetMapping(value = "/queryPageListWithAllUser")
+    public Result<?> queryPageListWithUser(IntegralUserRel integralUserRel,
+                                   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+                                   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+                                   HttpServletRequest req) {
+        QueryWrapper<IntegralUserRel> queryWrapper = new QueryWrapper<>();
+        queryWrapper.setEntity(integralUserRel);
+        Page<IntegralUserRel> page = new Page<IntegralUserRel>(pageNo, pageSize);
+        IPage<IntegralUserRel> pageList = integralUserRelService.page(page, queryWrapper);
+        return Result.OK(pageList);
+    }
+
+    /**
     *   添加
     *
     * @param integralUserRel

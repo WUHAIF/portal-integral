@@ -7,6 +7,7 @@ import com.galaxy.portal.common.vo.Result;
 import com.galaxy.portal.integral.entity.IntegralTableConfig;
 import com.galaxy.portal.integral.entity.IntegralTableConfigRO;
 import com.galaxy.portal.integral.entity.IntegralTableConfigVO;
+import com.galaxy.portal.integral.entity.IntegralUnitRel;
 import com.galaxy.portal.integral.service.IIntegralTableConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: 资源-积分配置表
@@ -138,4 +141,17 @@ public class IntegralTableConfigController {
        }
        return Result.OK(integralTableConfig);
    }
+
+    /**
+     *  批量上/下架
+     *
+     * @param paramsMap
+     * @return
+     */
+    @ApiOperation(value="资源-积分配置表-(1.批量上/下架;2.批量设置数据等级；3：批量设置积分", notes="资源-积分配置表-批量上/下架")
+    @PutMapping(value = "/editBatch")
+    public Result<?> editBatch(@RequestBody Map<String,String> paramsMap) {
+        Result result = this.integralTableConfigService.editBatch(paramsMap);
+        return Result.OK("编辑成功!");
+    }
 }

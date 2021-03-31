@@ -75,8 +75,4 @@
         order by belong_to_unit,table_name desc
     </select>
 
-<!--    <select id="queryAllPerms" resultType="string">-->
-<!--        select upload_user_name from integral_data_type-->
-<!--    </select>-->
-
 </mapper>
