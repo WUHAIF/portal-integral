@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.portal.integral.mapper.IntegralTableConfigMapper">
+
+    <resultMap id="IntegraTableConfigInfoMap" type="com.galaxy.portal.integral.entity.IntegralTableConfigRO">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="table_id" property="tableId" jdbcType="INTEGER"/>
+        <result column="table_name" property="tableName" jdbcType="VARCHAR"/>
+        <result column="table_type" property="tableType" jdbcType="VARCHAR"/>
+        <result column="upload_user" property="uploadUser" jdbcType="INTEGER"/>
+        <result column="upload_user_name" property="uploadUserName" jdbcType="VARCHAR"/>
+        <result column="belong_to_unit" property="belongToUnit" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="data_type_id" property="dataTypeId" jdbcType="INTEGER"/>
+        <result column="put_on_sale" property="putOnSale" jdbcType="INTEGER"/>
+        <result column="search_integral" property="searchIntegral" jdbcType="INTEGER"/>
+        <result column="integral_data_type" property="integralDataType" jdbcType="VARCHAR"/>
+        <result column="integral_top_limit" property="integralTopLimit" jdbcType="INTEGER"/>
+        <result column="integral_lower_limit" property="integralLowerLimit" jdbcType="INTEGER"/>
+
+    </resultMap>
+    <select id="selectListByUser"  resultMap="IntegraTableConfigInfoMap">
+        SELECT
+        config.id,
+        config.table_id,
+        config.table_name,
+        config.table_type,
+        config.upload_user,
+        config.upload_user_name,
+        config.belong_to_unit,
+        config.update_time,
+        config.update_user,
+        config.data_type_id,
+        config.put_on_sale,
+        config.search_integral,
+        type.integral_data_type,
+        type.integral_top_limit,
+        type.integral_lower_limit
+        FROM
+        integral_table_config config
+        LEFT JOIN integral_data_type type ON config.data_type_id = type.id
+        <where>
+            <if test="info.tableId !=null and info.tableId != ''">
+                and config.table_id = #{info.tableId}
+            </if>
+            <if test="info.tableName !=null and info.tableName != ''">
+                and config.table_name LIKE concat(concat('%',#{info.tableName}),'%')
+            </if>
+            <if test="info.tableType !=null and info.tableType != ''">
+                and config.table_type #{info.tableType}
+            </if>
+            <if test="info.searchIntegral !=null and info.searchIntegral != ''">
+                and config.search_integral = #{info.searchIntegral}
+            </if>
+            <if test="info.belongToUnit !=null and info.belongToUnit != ''">
+                and config.belong_to_unit = #{info.belongToUnit}
+            </if>
+            <if test="info.uploadUser !=null and info.uploadUser != ''">
+                and config.uploadUser = #{info.uploadUser}
+            </if>
+            <if test="info.uploadUserName !=null and info.uploadUserName != ''">
+                and config.upload_user_name = #{info.uploadUserName}
+            </if>
+            <if test="info.integral_data_type !=null and info.integral_data_type != ''">
+                and type.integral_data_type LIKE concat(concat('%',#{info.integralDataType}),'%')
+            </if>
+            <if test="info.tableType !=null and info.tableType != ''">
+                and type.integral_top_limit = #{info.integralTopLimit}
+            </if>
+            <if test="info.putOnSale !=null and info.putOnSale != ''">
+                and config.put_on_sale = #{info.putOnSale}
+            </if>
+        </where>
+        order by belong_to_unit,table_name desc
+    </select>
+
+<!--    <select id="queryAllPerms" resultType="string">-->
+<!--        select upload_user_name from integral_data_type-->
+<!--    </select>-->
+
+</mapper>
