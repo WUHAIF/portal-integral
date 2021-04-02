@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
 * @Description: 积分-用户关系表
-* @Author: jeecg-boot
+* @Author: wuhaifeng
 * @Date:   2021-03-29
 * @Version: V1.0
 */
@@ -78,10 +78,9 @@ public class IntegralUserRelController{
                                    @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
                                    @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
                                    HttpServletRequest req) {
-        QueryWrapper<IntegralUserRel> queryWrapper = new QueryWrapper<>();
-        queryWrapper.setEntity(integralUserRel);
-        Page<IntegralUserRel> page = new Page<IntegralUserRel>(pageNo, pageSize);
-        IPage<IntegralUserRel> pageList = integralUserRelService.page(page, queryWrapper);
+
+
+        IPage<IntegralUserRel> pageList = integralUserRelService.queryPageListWithUser(integralUserRel, pageNo,pageSize);
         return Result.OK(pageList);
     }
 
@@ -110,6 +109,19 @@ public class IntegralUserRelController{
        integralUserRelService.updateById(integralUserRel);
        return Result.OK("编辑成功!");
    }
+
+    /**
+     *  新增或者保存
+     *
+     * @param integralUserRel
+     * @return
+     */
+    @ApiOperation(value="积分-用户关系表-新增或者保存", notes="积分-用户关系表-新增或者保存")
+    @PutMapping(value = "/saveOrUpdate")
+    public Result<?> saveOrUpdate(@RequestBody IntegralUserRel integralUserRel) {
+        integralUserRelService.saveOrUpdate(integralUserRel);
+        return Result.OK("新增或者保存成功!");
+    }
 
    /**
     *   通过id删除
@@ -152,4 +164,20 @@ public class IntegralUserRelController{
        }
        return Result.OK(integralUserRel);
    }
+
+    /**
+     * 通过用户查询
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation(value="积分-用户关系表-通过用户查询", notes="积分-用户关系表-通过用户查询")
+    @GetMapping(value = "/selectOneByUser")
+    public Result<?> selectOneByUser(@RequestParam(name="userId",required=true) String userId) {
+        IntegralUserRel integralUserRel = integralUserRelService.selectOneByUser(userId);
+        if(integralUserRel==null) {
+            return Result.error("未找到对应数据");
+        }
+        return Result.OK(integralUserRel);
+    }
 }

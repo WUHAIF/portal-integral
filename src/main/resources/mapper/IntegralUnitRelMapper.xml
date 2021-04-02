@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.galaxy.portal.integral.mapper.IntegralUnitRelMapper">
 
+    <resultMap id="IntegralUnitRelMap" type="com.galaxy.portal.integral.entity.IntegralUnitRel">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="unit_code" property="unitCode" jdbcType="INTEGER"/>
+        <result column="unit_name" property="unitName" jdbcType="VARCHAR"/>
+        <result column="current_integral" property="currentIntegral" jdbcType="INTEGER"/>
+        <result column="used_integral" property="usedIntegral" jdbcType="INTEGER"/>
+
+    </resultMap>
+    <!--<select id="queryPageListWithAllUser" resultMap="IntegralUnitRelMap">
+        select * from
+    </select>-->
 </mapper>

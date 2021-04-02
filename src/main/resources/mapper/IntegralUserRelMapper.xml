@@ -2,4 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.galaxy.portal.integral.mapper.IntegralUserRelMapper">
 
+    <resultMap id="IntegralUserRelMap" type="com.galaxy.portal.integral.entity.IntegralUserRel">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="allow_use_integral" property="allowUseIntegral" jdbcType="INTEGER"/>
+        <result column="used_integral" property="usedIntegral" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <select id="queryPageListWithUser" resultMap="IntegralUserRelMap">
+        SELECT rel.id,
+        user.id as "user_id",
+        user.username as "user_name",
+        IFNULL(rel.allow_use_integral, 0) as "allow_use_integral",
+        IFNULL(rel.used_integral, 0) as "used_integral"
+        FROM sys_user user LEFT JOIN integral_user_rel rel
+        ON user.id = rel.user_id
+        <if test="userRel.id != null and userRel.id != ''">
+           and  rel.id = #{id}
+        </if>
+
+        <if test="userRel.userId != null and userRel.userId != ''">
+            and  user.id = #{userId}
+        </if>
+
+        <if test="userRel.allowUseIntegral != null and userRel.allowUseIntegral != ''">
+            and  rel.allow_use_integral = #{allowUseIntegral}
+        </if>
+        <if test="userRel.usedIntegral != null and userRel.usedIntegral != ''">
+            and  rel.used_integral = #{usedIntegral}
+        </if>
+    </select>
 </mapper>

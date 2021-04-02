@@ -13,6 +13,7 @@ import com.galaxy.portal.integral.entity.IntegralTableConfigVO;
 import com.galaxy.portal.integral.entity.IntegralUnitRel;
 import com.galaxy.portal.integral.mapper.IntegralTableConfigMapper;
 import com.galaxy.portal.integral.service.IIntegralTableConfigService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import java.util.stream.Stream;
 
 /**
  * @Description: 资源-积分配置表
- * @Author: jeecg-boot
+ * @Author: wuhaifeng
  * @Date:   2021-03-29
  * @Version: V1.0
  */
@@ -106,6 +107,16 @@ public class IntegralTableConfigServiceImpl extends ServiceImpl<IntegralTableCon
             return Result.error("批量更新失败");
         }
 
+    }
+
+    @Override
+    public IntegralTableConfig selectOneByResource(String resourceName) {
+        IntegralTableConfig integralTableConfig = new IntegralTableConfig();
+        integralTableConfig.setTableName(resourceName);
+        QueryWrapper<IntegralTableConfig> queryWrapper = new QueryWrapper<>();
+        queryWrapper.setEntity(integralTableConfig).last(" limit 1");
+        IntegralTableConfig resultConfig = this.baseMapper.selectOne(queryWrapper);
+        return resultConfig;
     }
 
 }

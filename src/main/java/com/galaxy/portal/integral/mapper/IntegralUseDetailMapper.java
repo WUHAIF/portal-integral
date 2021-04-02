@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @Description: 积分使用明细表
- * @Author: jeecg-boot
+ * @Author: wuhaifeng
  * @Date:   2021-03-29
  * @Version: V1.0
  */

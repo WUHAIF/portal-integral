@@ -29,7 +29,7 @@ public class SysUser implements Serializable {
     /**
      * 登录账号
      */
-    private String username;
+    private String userName;
 
 
     /**

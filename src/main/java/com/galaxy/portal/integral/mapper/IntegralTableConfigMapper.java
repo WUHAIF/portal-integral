@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * @Description: 资源-积分配置表
- * @Author: jeecg-boot
+ * @Author: wuhaifeng
  * @Date:   2021-03-29
  * @Version: V1.0
  */
@@ -26,8 +26,7 @@ public interface IntegralTableConfigMapper extends BaseMapper<IntegralTableConfi
     /**
      * 自定义sql分页
      * @param page
-     * @param queryWrapper
-     * 看这里看这里，如果自定义的方法中需要用到wrapper查询条件，需要这样写
+     * @param integralTableConfigVO
      * @return
      */
     IPage<IntegralTableConfigRO> selectListByUser(IPage<IntegralTableConfigRO> page, @Param("info") IntegralTableConfigVO integralTableConfigVO);

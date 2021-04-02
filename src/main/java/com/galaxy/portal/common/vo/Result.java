@@ -2,6 +2,7 @@ package com.galaxy.portal.common.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.galaxy.portal.common.constant.CommonConstant;
+import com.galaxy.portal.common.constant.enums.ApiResultEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -53,7 +54,8 @@ public class Result<T> implements Serializable {
 	public Result() {
 		
 	}
-	
+
+
 	public Result<T> success(String message) {
 		this.message = message;
 		this.code = CommonConstant.SC_OK_200;
@@ -122,6 +124,12 @@ public class Result<T> implements Serializable {
 		r.setCode(code);
 		r.setMessage(msg);
 		r.setSuccess(false);
+		return r;
+	}
+	public static Result error(ApiResultEnum resultEnum) {
+		Result<Object> r = new Result<>();
+		r.setCode(resultEnum.getCode());
+		r.setMessage(resultEnum.getMessage());
 		return r;
 	}
 

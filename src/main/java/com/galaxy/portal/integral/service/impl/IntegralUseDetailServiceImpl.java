@@ -9,11 +9,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**
  * @Description: 积分使用明细表
- * @Author: jeecg-boot
+ * @Author: wuhaifeng
  * @Date:   2021-03-29
  * @Version: V1.0
  */
 @Service
 public class IntegralUseDetailServiceImpl extends ServiceImpl<IntegralUseDetailMapper, IntegralUseDetail> implements IIntegralUseDetailService {
+
 
 }

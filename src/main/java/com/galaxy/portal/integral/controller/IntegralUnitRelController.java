@@ -1,10 +1,7 @@
 package com.galaxy.portal.integral.controller;
 
 import java.util.Arrays;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.galaxy.portal.common.vo.Result;
 import com.galaxy.portal.integral.entity.IntegralUnitRel;
 import com.galaxy.portal.integral.service.IIntegralUnitRelService;
@@ -14,16 +11,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
 * @Description: 积分-部门关系表
-* @Author: jeecg-boot
+* @Author: wuhaifeng
 * @Date:   2021-03-29
 * @Version: V1.0
 */
@@ -65,19 +58,16 @@ public class IntegralUnitRelController {
      * @param pageSize
      * @param req
      * @return
-     */
+
     @ApiOperation(value="积分-部门关系表-分页列表查询", notes="积分-部门关系表-分页列表查询")
     @GetMapping(value = "/listWithAllUser")
     public Result<?> queryPageListWithAllUser(IntegralUnitRel integralUnitRel,
                                    @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
                                    @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
                                    HttpServletRequest req) {
-        QueryWrapper<IntegralUnitRel> queryWrapper = new QueryWrapper<>();
-        queryWrapper.setEntity(integralUnitRel);
-        Page<IntegralUnitRel> page = new Page<IntegralUnitRel>(pageNo, pageSize);
-        IPage<IntegralUnitRel> pageList = integralUnitRelService.page(page, queryWrapper);
+        IPage<IntegralUnitRel> pageList = integralUnitRelService.queryPageListWithAllUser(integralUnitRel, pageNo,pageSize);
         return Result.OK(pageList);
-    }
+    }*/
    /**
     *   添加
     *
@@ -145,6 +135,23 @@ public class IntegralUnitRelController {
        }
        return Result.OK(integralUnitRel);
    }
+
+
+    /**
+     * 通过部门查询
+     *
+     * @param uniteCode
+     * @return
+     */
+    @ApiOperation(value="积分-部门关系表-通过部门查询", notes="积分-部门关系表-通过部门查询")
+    @GetMapping(value = "/selectOneByUnit")
+    public Result<?> selectOneByUnit(@RequestParam(name="id",required=true) String uniteCode) {
+        IntegralUnitRel integralUnitRel = integralUnitRelService.selectOneByUnit(uniteCode);
+        if(integralUnitRel==null) {
+            return Result.error("未找到对应数据");
+        }
+        return Result.OK(integralUnitRel);
+    }
 
 
 

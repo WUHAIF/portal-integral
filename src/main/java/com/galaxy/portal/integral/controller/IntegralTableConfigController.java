@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
 * @Description: 资源-积分配置表
-* @Author: jeecg-boot
+* @Author: wuhaifeng
 * @Date:   2021-03-29
 * @Version: V1.0
 */
@@ -153,5 +153,21 @@ public class IntegralTableConfigController {
     public Result<?> editBatch(@RequestBody Map<String,String> paramsMap) {
         Result result = this.integralTableConfigService.editBatch(paramsMap);
         return Result.OK("编辑成功!");
+    }
+
+    /**
+     *  根据资源获取资源-积分配置信息
+     *
+     * @param paramsMap
+     * @return
+     */
+    @ApiOperation(value="资源-积分配置表-(1.批量上/下架;2.批量设置数据等级；3：批量设置积分", notes="资源-积分配置表-批量上/下架")
+    @GetMapping(value = "/selectOneByResource")
+    public Result<?> selectOneByResource(String resourceId) {
+        IntegralTableConfig integralTableConfig = this.integralTableConfigService.selectOneByResource(resourceId);
+        if(integralTableConfig==null) {
+            return Result.error("未找到对应数据");
+        }
+        return Result.OK(integralTableConfig);
     }
 }

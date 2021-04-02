@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 
 /**
  * @Description: 积分使用明细表
- * @Author: jeecg-boot
+ * @Author: wuhaifeng
  * @Date:   2021-03-29
  * @Version: V1.0
  */
@@ -46,18 +46,18 @@ public class IntegralUseDetail implements Serializable {
     @ApiModelProperty(value = "用户名称")
     private String userName;
 	/**积分类型；0：新增积分；1：消费积分*/
-    @ApiModelProperty(value = "积分类型；0：新增积分；1：消费积分")
-    private String integralType;
+    @ApiModelProperty(value = "积分类型；0：下发积分；2：扣除积分；3：消费积分；4：收入积分")
+    private Integer integralType;
 	/**操作时间*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    @ApiModelProperty(value = "操作时间")
+    @ApiModelProperty(value = "操作时间",hidden = true)
     private Date operTime;
 	/**操作积分分值*/
     @ApiModelProperty(value = "操作积分分值")
     private Integer operIntegralNum;
 	/**部门剩余积分*/
-    @ApiModelProperty(value = "部门剩余积分")
+    @ApiModelProperty(value = "部门剩余积分",hidden = true)
     private Integer remainIntegralNum;
 	/**操作详细描述*/
     @ApiModelProperty(value = "操作详细描述")

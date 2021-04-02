@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * @Description: 资源-积分配置表
- * @Author: jeecg-boot
+ * @Author: wuhaifeng
  * @Date:   2021-03-29
  * @Version: V1.0
  */
@@ -22,4 +22,6 @@ public interface IIntegralTableConfigService extends IService<IntegralTableConfi
     IPage<IntegralTableConfigRO> selectIntegraTableConfigInfoByUser(IPage<IntegralTableConfigRO> page, IntegralTableConfigVO integralTableConfigVO) throws Exception;
 
     Result editBatch(Map<String,String> parmasMap);
+
+    IntegralTableConfig selectOneByResource(String resourceId);
 }

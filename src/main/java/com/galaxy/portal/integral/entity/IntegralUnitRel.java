@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+
+import com.baomidou.mybatisplus.annotation.*;
+import com.galaxy.portal.common.system.SysUser;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 
 /**
  * @Description: 积分-部门关系表
- * @Author: jeecg-boot
+ * @Author: wuhaifeng
  * @Date:   2021-03-29
  * @Version: V1.0
  */
@@ -34,10 +34,10 @@ public class IntegralUnitRel implements Serializable {
     @ApiModelProperty(value = "主键")
     private String id;
 	/**部门id*/
-    @ApiModelProperty(value = "部门id")
-    private String unitId;
+    @ApiModelProperty(value = "部门Code",required = true)
+    private String unitCode;
 	/**部门名称*/
-    @ApiModelProperty(value = "部门名称")
+    @ApiModelProperty(value = "部门名称",required = true)
     private String unitName;
 	/**当前部门积分*/
     @ApiModelProperty(value = "当前部门积分")
@@ -45,4 +45,8 @@ public class IntegralUnitRel implements Serializable {
 	/**已使用积分*/
     @ApiModelProperty(value = "已使用积分")
     private Integer usedIntegral;
+    /**乐观锁版本*/
+    @Version
+    @ApiModelProperty(value = "乐观锁版本",hidden = true)
+    private Integer version;
 }

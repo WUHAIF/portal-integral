@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
 * @Description: 数据等级定义表
-* @Author: jeecg-boot
+* @Author: wuhaifeng
 * @Date:   2021-03-29
 * @Version: V1.0
 */
